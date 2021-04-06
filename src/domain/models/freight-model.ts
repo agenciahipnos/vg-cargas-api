@@ -1,5 +1,6 @@
 export interface FreightModel {
   id: string
+  available: boolean
   origin_city: string
   origin_state: string
   formated_price: string
