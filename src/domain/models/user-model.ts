@@ -2,7 +2,7 @@ import { AddressModel } from './address-model'
 import { CompanyModel } from './company-model'
 import { DriverModel } from './driver-model'
 
-export interface User {
+export interface UserModel {
   id: string
   address: AddressModel
   driver: DriverModel
