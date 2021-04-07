@@ -5,4 +5,5 @@ export interface Address {
   neighborhood: string
   street: string
   number: number
+  observations: string
 }
