@@ -1,5 +1,5 @@
-import { UserModel } from '@/domain/models/user-model'
 import { model, Schema, Model, Document } from 'mongoose'
+import { UserModel } from '@/domain/models/user-model'
 
 interface IUser extends Document, Omit<UserModel, 'id'> {}
 
