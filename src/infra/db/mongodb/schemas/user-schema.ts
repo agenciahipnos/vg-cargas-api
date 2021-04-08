@@ -1,9 +1,11 @@
 import { model, Schema, Model, Document } from 'mongoose'
 import { UserModel } from '@/domain/models/user-model'
+import { Address } from './address-schema'
 
 interface IUser extends Document, Omit<UserModel, 'id'> {}
 
 const UserSchema: Schema = new Schema({
+  address: [Address],
   email: {
     type: String,
     required: true
