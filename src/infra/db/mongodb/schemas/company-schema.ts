@@ -7,7 +7,7 @@ import { User } from './user-schema'
 interface ICompany extends Document, Omit<CompanyModel, 'id'> {}
 
 const CompanySchema: Schema = new Schema({
-  user: [User],
+  user: User,
   address: [Address],
   freight: [Freight],
   name: {
