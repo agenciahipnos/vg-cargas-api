@@ -25,7 +25,7 @@ export class LoginController implements Controller {
         password: decrypted_password
       })
       if (!token) {
-        return forbidden(new Error('Usuário ou senha inválidos!'))
+        return forbidden(new Error('Invalid Credentials!'))
       }
       return Promise.resolve(null)
     } catch (error) {
