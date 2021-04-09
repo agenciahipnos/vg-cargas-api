@@ -89,4 +89,13 @@ describe('Login Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(forbidden(new Error('Invalid Credentials!')))
   })
+
+  test('should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
