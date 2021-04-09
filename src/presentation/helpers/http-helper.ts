@@ -21,3 +21,11 @@ export const serverError = (error: Error): HttpResponse => ({
   },
   error: error
 })
+
+export const forbidden = (error: Error): HttpResponse => ({
+  statusCode: 403,
+  body: {
+    code: 403,
+    error: error.message
+  }
+})
