@@ -1,4 +1,4 @@
-import { badRequestValidation } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, serverError } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -49,5 +49,14 @@ describe('Login Controller', () => {
     jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => mockValidatorResultBadRequest())
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(badRequestValidation(mockValidatorResultBadRequest()))
+  })
+
+  test('should return 500 if Validator throws', async () => {
+    const { sut, validatorStub } = makeSut()
+    jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
