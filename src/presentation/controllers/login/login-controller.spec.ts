@@ -75,4 +75,11 @@ describe('Login Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
   })
+
+  test('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(mockRequest())
+    expect(authSpy).toHaveBeenCalledWith(Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' }))
+  })
 })
