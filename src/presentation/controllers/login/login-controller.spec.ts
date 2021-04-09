@@ -1,4 +1,4 @@
-import { badRequestValidation, serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, forbidden, serverError } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -81,5 +81,12 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(mockRequest())
     expect(authSpy).toHaveBeenCalledWith(Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' }))
+  })
+
+  test('should return 403 if user has invalid credentials', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => null)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(forbidden(new Error('Invalid Credentials!')))
   })
 })
