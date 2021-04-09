@@ -1,3 +1,4 @@
+import { badRequestValidation } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -5,6 +6,7 @@ import { Validator } from '@/presentation/protocols/validator'
 import { mockAuthentication } from '@/presentation/test/mock-authentication'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
 import { mockValidator } from '@/presentation/test/mock-validator'
+import { mockValidatorResultBadRequest } from '@/presentation/test/mock-validator-result'
 import { LoginController } from './login-controller'
 
 const mockRequest = (): HttpRequest => ({
@@ -40,5 +42,12 @@ describe('Login Controller', () => {
     const validatorSpy = jest.spyOn(validatorStub, 'validate')
     await sut.handle(mockRequest())
     expect(validatorSpy).toHaveBeenCalledWith(mockRequest().body)
+  })
+
+  test('should return 400 if Validator returns an error', async () => {
+    const { sut, validatorStub } = makeSut()
+    jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => mockValidatorResultBadRequest())
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(badRequestValidation(mockValidatorResultBadRequest()))
   })
 })
