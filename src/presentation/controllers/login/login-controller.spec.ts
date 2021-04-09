@@ -66,4 +66,13 @@ describe('Login Controller', () => {
     await sut.handle(mockRequest())
     expect(decryptSpy).toHaveBeenCalledWith(mockRequest().body.password)
   })
+
+  test('should return 500 if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
