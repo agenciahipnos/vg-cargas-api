@@ -1,3 +1,3 @@
 export interface Decrypter {
-  decrypt: (ciphertext: string) => any
+  decrypt: (ciphertext: string) => string
 }
