@@ -1,4 +1,4 @@
-import { badRequestValidation, serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, forbidden, serverError } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Controller } from '@/presentation/protocols/controller'
 import { Decrypter } from '@/presentation/protocols/decrypter'
@@ -20,10 +20,13 @@ export class LoginController implements Controller {
         return badRequestValidation(validatorResult)
       }
       const decrypted_password = this.decrypter.decrypt(body.password)
-      await this.authentication.auth({
+      const token = await this.authentication.auth({
         email: body.email,
         password: decrypted_password
       })
+      if (!token) {
+        return forbidden(new Error('Usuário ou senha inválidos!'))
+      }
       return Promise.resolve(null)
     } catch (error) {
       return serverError(error)
