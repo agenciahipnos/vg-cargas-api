@@ -19,6 +19,7 @@ export class LoginController implements Controller {
       if (validatorResult) {
         return badRequestValidation(validatorResult)
       }
+      this.decrypter.decrypt(body.password)
       return Promise.resolve(null)
     } catch (error) {
       return serverError(error)
