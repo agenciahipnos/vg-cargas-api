@@ -19,7 +19,11 @@ export class LoginController implements Controller {
       if (validatorResult) {
         return badRequestValidation(validatorResult)
       }
-      this.decrypter.decrypt(body.password)
+      const decrypted_password = this.decrypter.decrypt(body.password)
+      await this.authentication.auth({
+        email: body.email,
+        password: decrypted_password
+      })
       return Promise.resolve(null)
     } catch (error) {
       return serverError(error)
