@@ -3,7 +3,7 @@ import { Company } from './company'
 import { Driver } from './driver'
 
 export interface User {
-  address: Address
+  address: Address[]
   driver: Driver
   company: Company
   email: string
