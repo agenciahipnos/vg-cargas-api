@@ -1,4 +1,4 @@
-import { badRequestValidation, forbidden, serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -97,5 +97,11 @@ describe('Login Controller', () => {
     })
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(ok({ token: 'any_token' }))
   })
 })
