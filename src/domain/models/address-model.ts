@@ -5,6 +5,6 @@ export interface AddressModel {
   city: string
   neighborhood: string
   street: string
-  number: number
+  number: string
   observations: string
 }
