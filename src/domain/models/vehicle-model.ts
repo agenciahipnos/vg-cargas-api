@@ -1,5 +1,5 @@
 export interface VehicleModel {
-  id: string
+  _id: string
   modelo: string
   marca: string
   ano: string

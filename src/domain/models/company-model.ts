@@ -2,7 +2,7 @@ import { AddressModel } from './address-model'
 import { FreightModel } from './freight-model'
 
 export interface CompanyModel {
-  id: string
+  _id: string
   address: AddressModel[]
   freight: FreightModel[]
   name: string

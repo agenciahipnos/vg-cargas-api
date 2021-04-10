@@ -3,7 +3,7 @@ import { CompanyModel } from './company-model'
 import { DriverModel } from './driver-model'
 
 export interface UserModel {
-  id: string
+  _id: string
   address: AddressModel
   driver: DriverModel
   company: CompanyModel
