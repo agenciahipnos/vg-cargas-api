@@ -29,3 +29,11 @@ export const forbidden = (error: Error): HttpResponse => ({
     error: error.message
   }
 })
+
+export const ok = (data: any): HttpResponse => ({
+  statusCode: 201,
+  body: {
+    code: 201,
+    success: data
+  }
+})
