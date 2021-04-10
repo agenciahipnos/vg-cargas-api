@@ -1,4 +1,4 @@
-import { badRequestValidation, forbidden, serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Authentication } from '@/presentation/protocols/authentication'
 import { Controller } from '@/presentation/protocols/controller'
 import { Decrypter } from '@/presentation/protocols/decrypter'
@@ -27,7 +27,9 @@ export class LoginController implements Controller {
       if (!token) {
         return forbidden(new Error('Invalid Credentials!'))
       }
-      return Promise.resolve(null)
+      return ok({
+        token
+      })
     } catch (error) {
       return serverError(error)
     }
