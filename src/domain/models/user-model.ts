@@ -4,7 +4,7 @@ import { DriverModel } from './driver-model'
 
 export interface UserModel {
   _id: string
-  address: AddressModel
+  address: AddressModel[]
   driver: DriverModel
   company: CompanyModel
   email: string
