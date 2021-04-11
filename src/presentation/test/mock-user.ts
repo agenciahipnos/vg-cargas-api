@@ -1,6 +1,6 @@
 import { User } from '@/domain/entities/user'
 import { UserModel } from '@/domain/models/user-model'
-import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
+import { CreateUserRepository, CreateUserReturnParams } from '@/domain/usecases/user/create-user-repository'
 
 export const mockUserModel = (): UserModel => ({
   address: [
@@ -46,9 +46,17 @@ export const mockUserModel = (): UserModel => ({
 
 export const mockCreateUser = (): CreateUserRepository => {
   class CreateUserStub implements CreateUserRepository {
-    async create (usuario: User): Promise<UserModel> {
-      return Promise.resolve(mockUserModel())
+    async create (usuario: User): Promise<CreateUserReturnParams> {
+      return Promise.resolve({
+        user: mockUserModel(),
+        access_token: 'any_token'
+      })
     }
   }
   return new CreateUserStub()
 }
+
+export const mockCreateUserReturn = (): CreateUserReturnParams => ({
+  user: mockUserModel(),
+  access_token: 'any_token'
+})
