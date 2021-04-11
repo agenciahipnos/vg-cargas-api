@@ -92,4 +92,13 @@ describe('Create User Controller', () => {
     const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
     expect(validatorSpy).toHaveBeenCalledWith(input)
   })
+
+  test('should return 500 if Validation throws', async () => {
+    const { sut, validatorStub } = makeSut()
+    jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
