@@ -1,4 +1,5 @@
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
+import { serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
@@ -12,8 +13,14 @@ export class CreateUserController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const body = httpRequest.body
-    this.decrypter.decrypt(body.password)
-    return Promise.resolve(null)
+    try {
+      const { password } = httpRequest.body
+      const decrypted_password = this.decrypter.decrypt(password)
+      const body = Object.assign({}, httpRequest.body, { password: decrypted_password })
+      this.validator.validate(body)
+      return Promise.resolve(null)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
