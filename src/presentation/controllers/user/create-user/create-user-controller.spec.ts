@@ -1,10 +1,10 @@
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
-import { badRequestValidation, serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
-import { mockCreateUser } from '@/presentation/test/mock-user'
+import { mockCreateUser, mockCreateUserReturn } from '@/presentation/test/mock-user'
 import { mockValidator } from '@/presentation/test/mock-validator'
 import { mockValidatorResultBadRequest } from '@/presentation/test/mock-validator-result'
 import { CreateUserController } from './create-user-controller'
@@ -116,5 +116,20 @@ describe('Create User Controller', () => {
     await sut.handle(mockRequest())
     const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
     expect(createUserSpy).toHaveBeenCalledWith(input)
+  })
+
+  test('should return 500 if CreateUserRepository throws', async () => {
+    const { sut, createUserStub } = makeSut()
+    jest.spyOn(createUserStub, 'create').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(ok(mockCreateUserReturn()))
   })
 })
