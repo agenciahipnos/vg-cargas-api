@@ -17,13 +17,41 @@ const initServer = async (): Promise<void> => {
 
 initServer().then(async () => {
   await User.create({
-    email: 'teste',
-    password: 'teste',
-    name: 'teste',
-    cpf: 'teste',
-    birthdate: 'teste',
-    phone: 'teste',
-    type: 'teste'
+    address: [
+      {
+        cep: 'any_cep',
+        state: 'any_state',
+        city: 'any_city',
+        neighborhood: 'any_neighborhood',
+        street: 'any_street',
+        number: 'any_number',
+        observations: 'any_observations'
+      }
+    ],
+    driver: {
+      vehicle: {
+        modelo: 'any_modelo',
+        marca: 'any_marca',
+        ano: 'any_ano',
+        capacidade_maxima: 'any_capacidade',
+        categoria_veiculo: 'any_categoria',
+        placa: 'any_placa',
+        carroceria: 'any_carroceria',
+        antt: 'any_antt',
+        seguro: true,
+        rastreador: true
+      },
+      freight: [],
+      cnh: 'any_cnh'
+    },
+    company: null,
+    email: 'any_email',
+    password: 'any_password',
+    name: 'any_name',
+    cpf: 'any_cpf',
+    birthdate: 'any_birthdate',
+    phone: 'any_phone',
+    type: 'any_type'
   })
   console.log(`
     #####################################################

@@ -1,10 +1,9 @@
-import { CompanyModel } from '@/domain/models/company-model'
 import { model, Schema, Model, Document } from 'mongoose'
 import { Address } from './address-schema'
 import { Freight } from './freight-schema'
 import { User } from './user-schema'
 
-interface ICompany extends Document, Omit<CompanyModel, 'id'> {}
+interface ICompany extends Document {}
 
 const CompanySchema: Schema = new Schema({
   user: User,

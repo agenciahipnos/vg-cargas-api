@@ -1,7 +1,6 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { VehicleModel } from '@/domain/models/vehicle-model'
 
-interface IVehicle extends Document, Omit<VehicleModel, 'id'> {}
+interface IVehicle extends Document {}
 
 const VehicleSchema: Schema = new Schema({
   modelo: {

@@ -1,7 +1,6 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { AddressModel } from '@/domain/models/address-model'
 
-interface IAddress extends Document, Omit<AddressModel, 'id'> {}
+interface IAddress extends Document {}
 
 const AddressSchema: Schema = new Schema({
   cep: {

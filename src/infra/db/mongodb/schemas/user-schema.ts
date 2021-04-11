@@ -1,10 +1,9 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { UserModel } from '@/domain/models/user-model'
 import { Address } from './address-schema'
 import { Driver } from './driver-schema'
 import { Company } from './company-schema'
 
-interface IUser extends Document, Omit<UserModel, 'id'> {}
+interface IUser extends Document {}
 
 const UserSchema: Schema = new Schema({
   address: [Address],

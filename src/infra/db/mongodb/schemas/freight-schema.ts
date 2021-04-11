@@ -1,7 +1,6 @@
-import { FreightModel } from '@/domain/models/freight-model'
 import { model, Schema, Model, Document } from 'mongoose'
 
-interface IFreight extends Document, Omit<FreightModel, 'id'> {}
+interface IFreight extends Document {}
 
 const FreightSchema: Schema = new Schema({
   available: {
