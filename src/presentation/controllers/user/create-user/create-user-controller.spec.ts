@@ -109,4 +109,12 @@ describe('Create User Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(badRequestValidation(mockValidatorResultBadRequest()))
   })
+
+  test('should call CreateUserRepository with correct values', async () => {
+    const { sut, createUserStub } = makeSut()
+    const createUserSpy = jest.spyOn(createUserStub, 'create')
+    await sut.handle(mockRequest())
+    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
+    expect(createUserSpy).toHaveBeenCalledWith(input)
+  })
 })
