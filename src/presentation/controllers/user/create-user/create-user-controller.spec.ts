@@ -1,4 +1,5 @@
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
+import { serverError } from '@/presentation/helpers/http-helper'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
@@ -73,5 +74,22 @@ describe('Create User Controller', () => {
     const decryptSpy = jest.spyOn(decrypterStub, 'decrypt')
     await sut.handle(mockRequest())
     expect(decryptSpy).toHaveBeenCalledWith(mockRequest().body.password)
+  })
+
+  test('should return 500 if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('should call Validation with correct values', async () => {
+    const { sut, validatorStub } = makeSut()
+    const validatorSpy = jest.spyOn(validatorStub, 'validate')
+    await sut.handle(mockRequest())
+    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
+    expect(validatorSpy).toHaveBeenCalledWith(input)
   })
 })
