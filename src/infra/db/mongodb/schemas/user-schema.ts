@@ -1,14 +1,20 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { Address } from './address-schema'
-import { Driver } from './driver-schema'
-import { Company } from './company-schema'
+import { AddressSchema } from './address-schema'
+import { DriverSchema } from './driver-schema'
+import { CompanySchema } from './company-schema'
 
 interface IUser extends Document {}
 
-const UserSchema: Schema = new Schema({
-  address: [Address],
-  driver: Driver,
-  company: Company,
+export const UserSchema: Schema = new Schema({
+  address: {
+    type: [AddressSchema]
+  },
+  driver: {
+    type: DriverSchema
+  },
+  company: {
+    type: CompanySchema
+  },
   email: {
     type: String,
     required: true

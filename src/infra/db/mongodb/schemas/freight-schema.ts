@@ -2,7 +2,7 @@ import { model, Schema, Model, Document } from 'mongoose'
 
 interface IFreight extends Document {}
 
-const FreightSchema: Schema = new Schema({
+export const FreightSchema: Schema = new Schema({
   available: {
     type: Boolean,
     default: true

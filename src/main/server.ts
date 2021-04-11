@@ -41,7 +41,7 @@ initServer().then(async () => {
         seguro: true,
         rastreador: true
       },
-      freight: [],
+      freight: null,
       cnh: 'any_cnh'
     },
     company: null,
@@ -52,6 +52,8 @@ initServer().then(async () => {
     birthdate: 'any_birthdate',
     phone: 'any_phone',
     type: 'any_type'
+  }).catch((error) => {
+    console.error(error)
   })
   console.log(`
     #####################################################

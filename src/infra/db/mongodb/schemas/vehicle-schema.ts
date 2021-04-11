@@ -2,7 +2,7 @@ import { model, Schema, Model, Document } from 'mongoose'
 
 interface IVehicle extends Document {}
 
-const VehicleSchema: Schema = new Schema({
+export const VehicleSchema: Schema = new Schema({
   modelo: {
     type: String,
     required: true

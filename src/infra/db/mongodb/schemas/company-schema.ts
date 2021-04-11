@@ -1,14 +1,16 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { Address } from './address-schema'
-import { Freight } from './freight-schema'
-import { User } from './user-schema'
+import { AddressSchema } from './address-schema'
+import { FreightSchema } from './freight-schema'
 
 interface ICompany extends Document {}
 
-const CompanySchema: Schema = new Schema({
-  user: User,
-  address: [Address],
-  freight: [Freight],
+export const CompanySchema: Schema = new Schema({
+  address: {
+    type: [AddressSchema]
+  },
+  freight: {
+    type: [FreightSchema]
+  },
   name: {
     type: String,
     required: true

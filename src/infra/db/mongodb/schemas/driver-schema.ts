@@ -1,12 +1,16 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { Freight } from './freight-schema'
-import { Vehicle } from './vehicle-schema'
+import { FreightSchema } from './freight-schema'
+import { VehicleSchema } from './vehicle-schema'
 
 interface IDriver extends Document {}
 
-const DriverSchema: Schema = new Schema({
-  vehicle: Vehicle,
-  freight: [Freight],
+export const DriverSchema: Schema = new Schema({
+  freight: {
+    type: [FreightSchema]
+  },
+  vehicle: {
+    type: VehicleSchema
+  },
   cnh: {
     type: String,
     required: true
