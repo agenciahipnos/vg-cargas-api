@@ -21,6 +21,7 @@ export class CreateUserController implements Controller {
       if (validator_result) {
         return badRequestValidation(validator_result)
       }
+      await this.createUser.create(body)
       return Promise.resolve(null)
     } catch (error) {
       return serverError(error)
