@@ -6,7 +6,7 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
 
 export class CreateUserController implements Controller {
-  constructor ( 
+  constructor (
     private readonly decrypter: Decrypter,
     private readonly validator: Validator,
     private readonly createUser: CreateUserRepository
