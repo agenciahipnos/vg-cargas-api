@@ -13,7 +13,7 @@ export class LoginController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    try { 
+    try {
       const body = httpRequest.body
       const validatorResult = this.validator.validate(body)
       if (validatorResult) {
