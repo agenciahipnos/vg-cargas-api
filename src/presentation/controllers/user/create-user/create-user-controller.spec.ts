@@ -116,7 +116,7 @@ describe('Create User Controller', () => {
     await sut.handle(mockRequest())
     const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
     expect(createUserSpy).toHaveBeenCalledWith(input)
-  })
+  }) 
 
   test('should return 500 if CreateUserRepository throws', async () => {
     const { sut, createUserStub } = makeSut()
