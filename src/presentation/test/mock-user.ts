@@ -39,7 +39,7 @@ export const mockUserModel = (): UserModel => ({
   password: 'any_password',
   name: 'any_name',
   cpf: 'any_cpf',
-  birthdate: 'any_birthdate',
+  birthdate: 'any_birthdate', 
   phone: 'any_phone',
   type: 'any_type'
 })
