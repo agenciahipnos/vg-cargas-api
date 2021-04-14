@@ -30,4 +30,13 @@ describe('List User Controller', () => {
     await sut.handle(mockRequest())
     expect(listUserSpy).toHaveBeenCalledWith(mockRequest().query.skip)
   })
+
+  test('should call ListUserRepository with 0 if skip not was send in request', async () => {
+    const { sut, listUserStub } = makeSut()
+    const listUserSpy = jest.spyOn(listUserStub, 'list')
+    const request = mockRequest()
+    delete request.query.skip
+    await sut.handle(request)
+    expect(listUserSpy).toHaveBeenCalledWith(0)
+  })
 })
