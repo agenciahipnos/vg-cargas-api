@@ -1,8 +1,8 @@
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
 import { NotFoundErrorFactory } from '@/infra/errors/not-found-error'
-import { notFound, serverError } from '@/presentation/helpers/http-helper'
+import { notFound, ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { mockFindUser } from '@/presentation/test/mock-user'
+import { mockFindUser, mockUserModel } from '@/presentation/test/mock-user'
 import { FindUserController } from './find-user-controller'
 
 const mockRequest = (): HttpRequest => ({
@@ -50,5 +50,11 @@ describe('Find user Controller', () => {
     })
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(notFound(error))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(ok(mockUserModel()))
   })
 })
