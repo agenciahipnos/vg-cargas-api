@@ -1,4 +1,5 @@
 import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
+import { ok } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
@@ -9,7 +10,7 @@ export class ListUserController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const skip = parseInt(httpRequest.query.skip) || 0
-    await this.listUser.list(skip)
-    return Promise.resolve(null)
+    const users = await this.listUser.list(skip)
+    return ok(users)
   }
 }
