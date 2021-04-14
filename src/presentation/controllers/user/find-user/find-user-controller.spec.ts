@@ -1,4 +1,5 @@
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
+import { serverError } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockFindUser } from '@/presentation/test/mock-user'
 import { FindUserController } from './find-user-controller'
@@ -29,5 +30,14 @@ describe('Find user Controller', () => {
     const findUserSpy = jest.spyOn(findUserStub, 'find')
     await sut.handle(mockRequest())
     expect(findUserSpy).toHaveBeenCalledWith(mockRequest().params.id)
+  })
+
+  test('should return 500 if FindUserRepository throws', async () => {
+    const { sut, findUserStub } = makeSut()
+    jest.spyOn(findUserStub, 'find').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
