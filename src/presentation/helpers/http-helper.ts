@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/infra/errors/not-found-error'
 import { ServerError } from '../errors/server-error'
 import { HttpResponse } from '../protocols/http'
 import { ValidatorReturn } from '../protocols/validator'
@@ -35,5 +36,13 @@ export const ok = (data: any): HttpResponse => ({
   body: {
     code: 201,
     success: data
+  }
+})
+
+export const notFound = (error: NotFoundError): HttpResponse => ({
+  statusCode: 404,
+  body: {
+    code: error.getCode(),
+    message: error.message
   }
 })
