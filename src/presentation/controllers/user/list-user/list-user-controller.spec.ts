@@ -1,4 +1,6 @@
+import { mockListUserModel } from '@/domain/test/mock-user'
 import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
+import { ok } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockListUser } from '@/presentation/test/mock-user'
 import { ListUserController } from './list-user-controller'
@@ -47,5 +49,11 @@ describe('List User Controller', () => {
     request.query.skip = '1'
     await sut.handle(request)
     expect(listUserSpy).toHaveBeenCalledWith(parseInt(request.query.skip))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(ok(mockListUserModel()))
   })
 })
