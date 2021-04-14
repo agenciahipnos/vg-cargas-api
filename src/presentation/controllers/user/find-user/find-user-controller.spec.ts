@@ -1,5 +1,6 @@
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
-import { serverError } from '@/presentation/helpers/http-helper'
+import { NotFoundErrorFactory } from '@/infra/errors/not-found-error'
+import { notFound, serverError } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockFindUser } from '@/presentation/test/mock-user'
 import { FindUserController } from './find-user-controller'
@@ -39,5 +40,15 @@ describe('Find user Controller', () => {
     })
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('should return 404 if no user was found', async () => {
+    const { sut, findUserStub } = makeSut()
+    const error = NotFoundErrorFactory('user')
+    jest.spyOn(findUserStub, 'find').mockImplementationOnce(() => {
+      throw error
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(notFound(error))
   })
 })
