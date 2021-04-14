@@ -3,6 +3,7 @@ import { UserModel } from '@/domain/models/user-model'
 import { mockListUserModel } from '@/domain/test/mock-user'
 import { ListReturn } from '@/domain/types/list-return'
 import { CreateUserRepository, CreateUserReturnParams } from '@/domain/usecases/user/create-user-repository'
+import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
 import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
 
 export const mockUserModel = (): UserModel => ({
@@ -71,4 +72,13 @@ export const mockListUser = (): ListUserRepository => {
     }
   }
   return new ListUserStub()
+}
+
+export const mockFindUser = (): FindUserRepository => {
+  class FindUserStub implements FindUserRepository {
+    async find (id: string): Promise<UserModel> {
+      return Promise.resolve(mockUserModel())
+    }
+  }
+  return new FindUserStub()
 }
