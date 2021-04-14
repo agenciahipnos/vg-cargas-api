@@ -1,6 +1,6 @@
 import { mockListUserModel } from '@/domain/test/mock-user'
 import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
-import { ok } from '@/presentation/helpers/http-helper'
+import { ok, serverError } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockListUser } from '@/presentation/test/mock-user'
 import { ListUserController } from './list-user-controller'
@@ -55,5 +55,14 @@ describe('List User Controller', () => {
     const { sut } = makeSut()
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(ok(mockListUserModel()))
+  })
+
+  test('should return 500 if ListUserRepository throws', async () => {
+    const { sut, listUserStub } = makeSut()
+    jest.spyOn(listUserStub, 'list').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
