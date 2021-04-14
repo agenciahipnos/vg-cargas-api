@@ -1,5 +1,5 @@
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
-import { serverError } from '@/presentation/helpers/http-helper'
+import { notFound, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
@@ -15,6 +15,9 @@ export class FindUserController implements Controller {
       return Promise.resolve(null)
     } catch (error) {
       console.error(error)
+      if (error.name === 'NotFoundError') {
+        return notFound(error)
+      }
       return serverError(error)
     }
   }
