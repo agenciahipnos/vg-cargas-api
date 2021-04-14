@@ -1,5 +1,5 @@
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
-import { notFound, serverError } from '@/presentation/helpers/http-helper'
+import { notFound, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
@@ -11,8 +11,8 @@ export class FindUserController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const id = httpRequest.params.id
-      await this.findUserRepository.find(id)
-      return Promise.resolve(null)
+      const user = await this.findUserRepository.find(id)
+      return ok(user)
     } catch (error) {
       console.error(error)
       if (error.name === 'NotFoundError') {
