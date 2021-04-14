@@ -8,7 +8,7 @@ export class ListUserController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const skip = httpRequest.query.skip
+    const skip = httpRequest.query.skip || 0
     await this.listUser.list(skip)
     return Promise.resolve(null)
   }
