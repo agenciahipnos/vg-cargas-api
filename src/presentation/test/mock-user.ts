@@ -1,6 +1,9 @@
 import { User } from '@/domain/entities/user'
 import { UserModel } from '@/domain/models/user-model'
+import { mockListUserModel } from '@/domain/test/mock-user'
+import { ListReturn } from '@/domain/types/list-return'
 import { CreateUserRepository, CreateUserReturnParams } from '@/domain/usecases/user/create-user-repository'
+import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
 
 export const mockUserModel = (): UserModel => ({
   address: [
@@ -60,3 +63,12 @@ export const mockCreateUserReturn = (): CreateUserReturnParams => ({
   user: mockUserModel(),
   access_token: 'any_token'
 })
+
+export const mockListUser = (): ListUserRepository => {
+  class ListUserStub implements ListUserRepository {
+    async list (skip: number): Promise<ListReturn<UserModel>> {
+      return Promise.resolve(mockListUserModel())
+    }
+  }
+  return new ListUserStub()
+}
