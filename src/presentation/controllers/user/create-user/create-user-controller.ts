@@ -23,7 +23,7 @@ export class CreateUserController implements Controller {
       const { password } = httpRequest.body
       const decrypted_password = this.decrypter.decrypt(password)
       const address = await this.createAddress.create(httpRequest.body.address)
-      const body = Object.assign({}, httpRequest.body, { password: decrypted_password })
+      const body = Object.assign({}, httpRequest.body, { password: decrypted_password, address })
       const user = await this.createUser.create(body)
       return ok(user)
     } catch (error) {

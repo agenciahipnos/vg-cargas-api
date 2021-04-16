@@ -4,7 +4,7 @@ import { badRequestValidation, ok, serverError } from '@/presentation/helpers/ht
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
-import { mockCreateAddress } from '@/presentation/test/mock-address'
+import { mockAddressModel, mockCreateAddress } from '@/presentation/test/mock-address'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
 import { mockCreateUser, mockCreateUserReturn } from '@/presentation/test/mock-user'
 import { mockValidator } from '@/presentation/test/mock-validator'
@@ -139,7 +139,7 @@ describe('Create User Controller', () => {
     const { sut, createUserStub } = makeSut()
     const createUserSpy = jest.spyOn(createUserStub, 'create')
     await sut.handle(mockRequest())
-    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
+    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password', address: mockAddressModel() })
     expect(createUserSpy).toHaveBeenCalledWith(input)
   })
 
