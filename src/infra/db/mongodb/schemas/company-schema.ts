@@ -1,15 +1,15 @@
 import { model, Schema, Model, Document } from 'mongoose'
-import { AddressSchema } from './address-schema'
-import { FreightSchema } from './freight-schema'
 
 interface ICompany extends Document {}
 
 export const CompanySchema: Schema = new Schema({
   address: {
-    type: [AddressSchema]
+    type: Schema.Types.ObjectId,
+    ref: 'Address'
   },
   freight: {
-    type: [FreightSchema]
+    type: Schema.Types.ObjectId,
+    ref: 'Freight'
   },
   name: {
     type: String,
