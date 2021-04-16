@@ -126,6 +126,15 @@ describe('Create User Controller', () => {
     expect(createAddressSpy).toHaveBeenCalledWith(mockRequest().body.address)
   })
 
+  test('should return 500 if CreateAddressRepository throws', async () => {
+    const { sut, createAddressStub } = makeSut()
+    jest.spyOn(createAddressStub, 'create').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
+
   test('should call CreateUserRepository with correct values', async () => {
     const { sut, createUserStub } = makeSut()
     const createUserSpy = jest.spyOn(createUserStub, 'create')
