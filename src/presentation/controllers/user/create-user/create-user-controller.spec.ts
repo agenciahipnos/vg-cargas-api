@@ -1,8 +1,10 @@
+import { CreateAddressRepository } from '@/domain/usecases/address/create-address-repository'
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
 import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
+import { mockCreateAddress } from '@/presentation/test/mock-address'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
 import { mockCreateUser, mockCreateUserReturn } from '@/presentation/test/mock-user'
 import { mockValidator } from '@/presentation/test/mock-validator'
@@ -54,18 +56,26 @@ type SutTypes = {
   decrypterStub: Decrypter
   validatorStub: Validator
   createUserStub: CreateUserRepository
+  createAddressStub: CreateAddressRepository
 }
 
 const makeSut = (): SutTypes => {
   const decrypterStub = mockDecrypter()
   const validatorStub = mockValidator()
   const createUserStub = mockCreateUser()
-  const sut = new CreateUserController(decrypterStub, validatorStub, createUserStub)
+  const createAddressStub = mockCreateAddress()
+  const sut = new CreateUserController(
+    decrypterStub,
+    validatorStub,
+    createUserStub,
+    createAddressStub
+  )
   return {
     sut,
     decrypterStub,
     validatorStub,
-    createUserStub
+    createUserStub,
+    createAddressStub
   }
 }
 
@@ -90,8 +100,7 @@ describe('Create User Controller', () => {
     const { sut, validatorStub } = makeSut()
     const validatorSpy = jest.spyOn(validatorStub, 'validate')
     await sut.handle(mockRequest())
-    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password' })
-    expect(validatorSpy).toHaveBeenCalledWith(input)
+    expect(validatorSpy).toHaveBeenCalledWith(mockRequest().body)
   })
 
   test('should return 500 if Validation throws', async () => {
@@ -108,6 +117,13 @@ describe('Create User Controller', () => {
     jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => mockValidatorResultBadRequest())
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(badRequestValidation(mockValidatorResultBadRequest()))
+  })
+
+  test('should call CreateAddressRepository with correct values', async () => {
+    const { sut, createAddressStub } = makeSut()
+    const createAddressSpy = jest.spyOn(createAddressStub, 'create')
+    await sut.handle(mockRequest())
+    expect(createAddressSpy).toHaveBeenCalledWith(mockRequest().body.address)
   })
 
   test('should call CreateUserRepository with correct values', async () => {
