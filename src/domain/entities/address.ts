@@ -4,6 +4,6 @@ export interface Address {
   city: string
   neighborhood: string
   street: string
-  number: number
+  number: string
   observations: string
 }
