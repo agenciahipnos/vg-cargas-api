@@ -1,4 +1,6 @@
 import { CreateAddressRepository } from '@/domain/usecases/address/create-address-repository'
+import { CreateCompanyRepository } from '@/domain/usecases/company/create-company-repository'
+import { CreateDriverRepository } from '@/domain/usecases/driver/create-driver-repository'
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
 import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
@@ -11,7 +13,9 @@ export class CreateUserController implements Controller {
     private readonly decrypter: Decrypter,
     private readonly validator: Validator,
     private readonly createUser: CreateUserRepository,
-    private readonly createAddress: CreateAddressRepository
+    private readonly createAddress: CreateAddressRepository,
+    private readonly createDriver: CreateDriverRepository,
+    private readonly createCompany: CreateCompanyRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -23,6 +27,11 @@ export class CreateUserController implements Controller {
       const { password } = httpRequest.body
       const decrypted_password = this.decrypter.decrypt(password)
       const address = await this.createAddress.create(httpRequest.body.address)
+      let company
+      let driver
+      if (httpRequest.body.company) {
+        company = await this.createCompany.create(httpRequest.body.company)
+      }
       const body = Object.assign({}, httpRequest.body, { password: decrypted_password, address })
       const user = await this.createUser.create(body)
       return ok(user)
