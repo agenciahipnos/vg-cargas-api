@@ -10,7 +10,7 @@ import { Validator } from '@/presentation/protocols/validator'
 import { mockAddressModel, mockCreateAddress } from '@/presentation/test/mock-address'
 import { mockCreateCompany } from '@/presentation/test/mock-company'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
-import { mockCreateDriver } from '@/presentation/test/mock-driver'
+import { mockCreateDriver, mockDriverModel } from '@/presentation/test/mock-driver'
 import { mockCreateUser, mockCreateUserReturn } from '@/presentation/test/mock-user'
 import { mockValidator } from '@/presentation/test/mock-validator'
 import { mockValidatorResultBadRequest } from '@/presentation/test/mock-validator-result'
@@ -170,11 +170,23 @@ describe('Create User Controller', () => {
     expect(response).toEqual(serverError(new Error()))
   })
 
+  test('should call CreateDriverRepository with correct values', async () => {
+    const { sut, createDriverStub } = makeSut()
+    const createDriverSpy = jest.spyOn(createDriverStub, 'create')
+    await sut.handle(mockRequest())
+    expect(createDriverSpy).toHaveBeenCalledWith(mockRequest().body.driver)
+  })
+
   test('should call CreateUserRepository with correct values', async () => {
     const { sut, createUserStub } = makeSut()
     const createUserSpy = jest.spyOn(createUserStub, 'create')
     await sut.handle(mockRequest())
-    const input = Object.assign({}, mockRequest().body, { password: 'any_decrypted_password', address: mockAddressModel() })
+    const input = Object.assign({}, mockRequest().body, {
+      password: 'any_decrypted_password',
+      address: mockAddressModel(),
+      driver: mockDriverModel(),
+      company: null
+    })
     expect(createUserSpy).toHaveBeenCalledWith(input)
   })
 
