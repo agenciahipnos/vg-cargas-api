@@ -158,6 +158,18 @@ describe('Create User Controller', () => {
     expect(createCompanySpy).toHaveBeenCalledWith(body.company)
   })
 
+  test('should return 500 if CreateCompanyRepository throws', async () => {
+    const { sut, createCompanyStub } = makeSut()
+    jest.spyOn(createCompanyStub, 'create').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const mock_request = mockRequest()
+    const company = mockCompany()
+    const body = Object.assign({}, mock_request.body, { company, driver: null })
+    const response = await sut.handle({ body })
+    expect(response).toEqual(serverError(new Error()))
+  })
+
   test('should call CreateUserRepository with correct values', async () => {
     const { sut, createUserStub } = makeSut()
     const createUserSpy = jest.spyOn(createUserStub, 'create')
