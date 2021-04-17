@@ -1,11 +1,16 @@
+import { mockCompany } from '@/domain/test/mock-company'
 import { CreateAddressRepository } from '@/domain/usecases/address/create-address-repository'
+import { CreateCompanyRepository } from '@/domain/usecases/company/create-company-repository'
+import { CreateDriverRepository } from '@/domain/usecases/driver/create-driver-repository'
 import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
 import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
 import { mockAddressModel, mockCreateAddress } from '@/presentation/test/mock-address'
+import { mockCreateCompany } from '@/presentation/test/mock-company'
 import { mockDecrypter } from '@/presentation/test/mock-decrypter'
+import { mockCreateDriver } from '@/presentation/test/mock-driver'
 import { mockCreateUser, mockCreateUserReturn } from '@/presentation/test/mock-user'
 import { mockValidator } from '@/presentation/test/mock-validator'
 import { mockValidatorResultBadRequest } from '@/presentation/test/mock-validator-result'
@@ -57,6 +62,8 @@ type SutTypes = {
   validatorStub: Validator
   createUserStub: CreateUserRepository
   createAddressStub: CreateAddressRepository
+  createCompanyStub: CreateCompanyRepository
+  createDriverStub: CreateDriverRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -64,18 +71,24 @@ const makeSut = (): SutTypes => {
   const validatorStub = mockValidator()
   const createUserStub = mockCreateUser()
   const createAddressStub = mockCreateAddress()
+  const createDriverStub = mockCreateDriver()
+  const createCompanyStub = mockCreateCompany()
   const sut = new CreateUserController(
     decrypterStub,
     validatorStub,
     createUserStub,
-    createAddressStub
+    createAddressStub,
+    createDriverStub,
+    createCompanyStub
   )
   return {
     sut,
     decrypterStub,
     validatorStub,
     createUserStub,
-    createAddressStub
+    createAddressStub,
+    createCompanyStub,
+    createDriverStub
   }
 }
 
@@ -133,6 +146,16 @@ describe('Create User Controller', () => {
     })
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('should call CreateCompanyRepository with correct values if company is sending in request', async () => {
+    const { sut, createCompanyStub } = makeSut()
+    const createCompanySpy = jest.spyOn(createCompanyStub, 'create')
+    const mock_request = mockRequest()
+    const company = mockCompany()
+    const body = Object.assign({}, mock_request.body, { company, driver: null })
+    await sut.handle({ body })
+    expect(createCompanySpy).toHaveBeenCalledWith(body.company)
   })
 
   test('should call CreateUserRepository with correct values', async () => {
