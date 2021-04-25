@@ -2,15 +2,13 @@ import { CreateAddressRepository } from '@/domain/usecases/address/create-addres
 import { UpdateCompanyRepository } from '@/domain/usecases/company/update-company-repository'
 import { UpdateDriverRepository } from '@/domain/usecases/driver/update-driver-repository'
 import { UpdateUserRepository } from '@/domain/usecases/user/update-user-repository'
-import { serverError } from '@/presentation/helpers/http-helper'
+import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
-import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
 
 export class UpdateUserController implements Controller {
   constructor (
-    private readonly decrypter: Decrypter,
     private readonly validator: Validator,
     private readonly updateUser: UpdateUserRepository,
     private readonly createAddress: CreateAddressRepository,
@@ -21,6 +19,11 @@ export class UpdateUserController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const body = httpRequest.body
+      const id = httpRequest.params.id
+      const validator_result = this.validator.validate(body)
+      if (validator_result) {
+        return badRequestValidation(validator_result)
+      }
       let driver = null
       let company = null
       const address = []
@@ -32,9 +35,13 @@ export class UpdateUserController implements Controller {
       }
       if (body.address) {
         body.address.map(async (item) => {
-          address.push(await this.createAddress.create(item))
+          const create_address = await this.createAddress.create(item)
+          address.push(create_address)
         })
       }
+      const new_body = Object.assign({}, body, { driver, company, address })
+      const updated_user = await this.updateUser.update(id, new_body)
+      return ok(updated_user)
     } catch (error) {
       console.error(error)
       return serverError(error)
