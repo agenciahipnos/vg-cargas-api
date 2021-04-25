@@ -1,5 +1,5 @@
 import { DeleteUserRepository } from '@/domain/usecases/user/delete-user-repository'
-import { ok, serverError } from '@/presentation/helpers/http-helper'
+import { notFound, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
