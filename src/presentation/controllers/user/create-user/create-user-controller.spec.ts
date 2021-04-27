@@ -40,6 +40,7 @@ const mockRequest = (): HttpRequest => ({
         carroceria: 'any_carroceria',
         antt: 'any_antt',
         seguro: true,
+
         rastreador: true
       },
       freight: [],
