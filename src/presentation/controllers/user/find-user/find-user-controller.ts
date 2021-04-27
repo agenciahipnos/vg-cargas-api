@@ -12,6 +12,7 @@ export class FindUserController implements Controller {
     try {
       const id = httpRequest.params.id
       const user = await this.findUserRepository.find(id)
+
       return ok(user)
     } catch (error) {
       console.error(error)
