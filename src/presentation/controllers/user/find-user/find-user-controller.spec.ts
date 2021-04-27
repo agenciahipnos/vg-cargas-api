@@ -28,6 +28,7 @@ const makeSut = (): SutTypes => {
 describe('Find user Controller', () => {
   test('should call FindUserRepository with correct values', async () => {
     const { sut, findUserStub } = makeSut()
+
     const findUserSpy = jest.spyOn(findUserStub, 'find')
     await sut.handle(mockRequest())
     expect(findUserSpy).toHaveBeenCalledWith(mockRequest().params.id)
