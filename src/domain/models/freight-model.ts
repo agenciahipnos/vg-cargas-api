@@ -1,5 +1,5 @@
 export interface FreightModel {
-  _id: string
+  _id?: string
   available: boolean
   origin_city: string
   origin_state: string
