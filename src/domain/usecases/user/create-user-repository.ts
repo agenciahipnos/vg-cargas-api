@@ -3,7 +3,6 @@ import { UserModel } from '@/domain/models/user-model'
 
 export type CreateUserReturnParams = {
   user: UserModel
-
   access_token: string
 }
 
