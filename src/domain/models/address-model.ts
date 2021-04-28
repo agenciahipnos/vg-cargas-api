@@ -1,5 +1,5 @@
 export interface AddressModel {
-  _id: string
+  _id?: string
   cep: string
   state: string
   city: string
