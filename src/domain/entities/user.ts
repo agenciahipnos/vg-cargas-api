@@ -1,11 +1,11 @@
-import { Address } from './address'
-import { Company } from './company'
-import { Driver } from './driver'
+import { AddressModel } from '../models/address-model'
+import { CompanyModel } from '../models/company-model'
+import { DriverModel } from '../models/driver-model'
 
 export interface User {
-  address: Address[]
-  driver: Driver
-  company: Company
+  address: AddressModel[]
+  driver: DriverModel
+  company: CompanyModel
   email: string
   password: string
   name: string
