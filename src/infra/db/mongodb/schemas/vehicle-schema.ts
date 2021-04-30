@@ -45,4 +45,4 @@ export const VehicleSchema: Schema = new Schema({
   }
 })
 
-export const Vehicle: Model<IVehicle> = model('Vehicle', VehicleSchema)
+export const VehicleMongo: Model<IVehicle> = model('Vehicle', VehicleSchema)
