@@ -1,6 +1,7 @@
+import { UserModel } from '@/domain/models/user-model'
 import { model, Schema, Model, Document } from 'mongoose'
 
-interface IUser extends Document {}
+interface IUser extends Document, Omit<UserModel, '_id'> {}
 
 export const UserSchema: Schema = new Schema({
   address: {
@@ -45,4 +46,4 @@ export const UserSchema: Schema = new Schema({
   }
 })
 
-export const User: Model<IUser> = model('User', UserSchema)
+export const UserMongo: Model<IUser> = model('User', UserSchema)
