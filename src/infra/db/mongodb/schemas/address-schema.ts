@@ -1,6 +1,7 @@
+import { AddressModel } from '@/domain/models/address-model'
 import { model, Schema, Model, Document } from 'mongoose'
 
-interface IAddress extends Document {}
+interface IAddress extends Document, Omit<AddressModel, '_id'> {}
 
 export const AddressSchema: Schema = new Schema({
   user: {
@@ -37,4 +38,4 @@ export const AddressSchema: Schema = new Schema({
   }
 })
 
-export const Address: Model<IAddress> = model('Address', AddressSchema)
+export const AddressMongo: Model<IAddress> = model('Address', AddressSchema)
