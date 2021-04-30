@@ -27,7 +27,6 @@ export class CreateUserController implements Controller {
       const { password } = httpRequest.body
       const decrypted_password = this.decrypter.decrypt(password)
       const address = await this.createAddress.create(httpRequest.body.address)
-
       let company = null
       let driver = null
       if (httpRequest.body.company) {
