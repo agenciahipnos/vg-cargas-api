@@ -2,7 +2,7 @@ import { User } from '@/domain/entities/user'
 import { UserModel } from '@/domain/models/user-model'
 import { mockListUserModel } from '@/domain/test/mock-user'
 import { ListReturn } from '@/domain/types/list-return'
-import { CreateUserRepository, CreateUserReturnParams } from '@/domain/usecases/user/create-user-repository'
+import { CreateUser, CreateUserReturnParams } from '@/domain/usecases/user/create-user'
 import { FindUserRepository } from '@/domain/usecases/user/find-user-repository'
 import { ListUserRepository } from '@/domain/usecases/user/list-user-repository'
 
@@ -48,8 +48,8 @@ export const mockUserModel = (): UserModel => ({
   type: 'any_type'
 })
 
-export const mockCreateUser = (): CreateUserRepository => {
-  class CreateUserStub implements CreateUserRepository {
+export const mockCreateUser = (): CreateUser => {
+  class CreateUserStub implements CreateUser {
     async create (usuario: User): Promise<CreateUserReturnParams> {
       return Promise.resolve({
         user: mockUserModel(),
