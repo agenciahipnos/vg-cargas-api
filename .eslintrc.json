@@ -15,6 +15,7 @@
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "camelcase": "off",
+    "prefer-regex-literals": "off",
     "eqeqeq": "off"
   }
 }
