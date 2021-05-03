@@ -1,14 +1,14 @@
 import { NotFoundError } from '@/infra/errors/not-found-error'
+import { ValidationResult } from 'joi'
 import { ServerError } from '../errors/server-error'
 import { HttpResponse } from '../protocols/http'
-import { ValidatorReturn } from '../protocols/validator'
 
-export const badRequestValidation = (error: ValidatorReturn): HttpResponse => {
+export const badRequestValidation = (result: ValidationResult): HttpResponse => {
   const response: HttpResponse = {
     statusCode: 400,
     body: {
       code: 400,
-      errors: error.messages
+      errors: result.error.details
     }
   }
   return response
