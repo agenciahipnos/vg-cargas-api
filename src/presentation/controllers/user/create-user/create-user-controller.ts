@@ -1,18 +1,19 @@
 import { CreateAddressRepository } from '@/domain/usecases/address/create-address-repository'
 import { CreateCompanyRepository } from '@/domain/usecases/company/create-company-repository'
 import { CreateDriverRepository } from '@/domain/usecases/driver/create-driver-repository'
-import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
+import { CreateUser } from '@/domain/usecases/user/create-user'
 import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Validator } from '@/presentation/protocols/validator'
+import { UserValidatorSchema } from '@/validation/user-validation-schema'
 
 export class CreateUserController implements Controller {
   constructor (
     private readonly decrypter: Decrypter,
     private readonly validator: Validator,
-    private readonly createUser: CreateUserRepository,
+    private readonly createUser: CreateUser,
     private readonly createAddress: CreateAddressRepository,
     private readonly createDriver: CreateDriverRepository,
     private readonly createCompany: CreateCompanyRepository
@@ -20,8 +21,8 @@ export class CreateUserController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const validator_result = this.validator.validate(httpRequest.body)
-      if (validator_result) {
+      const validator_result = UserValidatorSchema.validate(httpRequest.body)
+      if (validator_result.error) {
         return badRequestValidation(validator_result)
       }
       const { password } = httpRequest.body
@@ -43,6 +44,7 @@ export class CreateUserController implements Controller {
       const user = await this.createUser.create(body)
       return ok(user)
     } catch (error) {
+      console.error(error)
       return serverError(error)
     }
   }
