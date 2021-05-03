@@ -13,7 +13,9 @@ const initServer = async (): Promise<void> => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }
-  )
+  ).catch((error) => {
+    console.error(error)
+  })
   app.listen(env.port)
 }
 
