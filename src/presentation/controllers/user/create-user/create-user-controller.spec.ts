@@ -2,7 +2,7 @@ import { mockCompany } from '@/domain/test/mock-company'
 import { CreateAddressRepository } from '@/domain/usecases/address/create-address-repository'
 import { CreateCompanyRepository } from '@/domain/usecases/company/create-company-repository'
 import { CreateDriverRepository } from '@/domain/usecases/driver/create-driver-repository'
-import { CreateUserRepository } from '@/domain/usecases/user/create-user-repository'
+import { CreateUser } from '@/domain/usecases/user/create-user'
 import { badRequestValidation, ok, serverError } from '@/presentation/helpers/http-helper'
 import { Decrypter } from '@/presentation/protocols/decrypter'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -61,7 +61,7 @@ type SutTypes = {
   sut: CreateUserController
   decrypterStub: Decrypter
   validatorStub: Validator
-  createUserStub: CreateUserRepository
+  createUserStub: CreateUser
   createAddressStub: CreateAddressRepository
   createCompanyStub: CreateCompanyRepository
   createDriverStub: CreateDriverRepository
