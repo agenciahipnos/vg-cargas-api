@@ -1,12 +1,5 @@
-export interface ValidatorReturn {
-  messages: [
-    {
-      field: string
-      error: string
-    }
-  ]
-}
+import { ValidationResult } from 'joi'
 
 export interface Validator {
-  validate: (input: any) => ValidatorReturn
+  validate: (input: any) => ValidationResult
 }
