@@ -1,7 +1,8 @@
-import { Validator, ValidatorReturn } from '../protocols/validator'
+import { ValidationResult } from 'joi'
+import { Validator } from '../protocols/validator'
 
 export class ValidatorClass implements Validator {
-  validate (input: any): ValidatorReturn {
+  validate (input: any): ValidationResult {
     return null
   }
 }
