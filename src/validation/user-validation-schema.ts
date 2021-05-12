@@ -2,9 +2,10 @@ import { User } from '@/domain/entities/user'
 import Joi, { ObjectSchema } from 'joi'
 
 export const UserValidatorSchema: ObjectSchema<User> = Joi.object({
-  address: Joi.any(),
-  driver: Joi.any(),
-  company: Joi.any(),
+  address: Joi.array()
+    .required(),
+  driver: Joi.object(),
+  company: Joi.object(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .required(),
@@ -18,8 +19,8 @@ export const UserValidatorSchema: ObjectSchema<User> = Joi.object({
   birthdate: Joi.date()
     .required(),
   phone: Joi.string()
-    .min(13)
-    .max(14)
+    .min(14)
+    .max(15)
     .required(),
   type: Joi.string()
     .required()
