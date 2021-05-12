@@ -3,6 +3,17 @@ import { ValidationResult } from 'joi'
 import { ServerError } from '../errors/server-error'
 import { HttpResponse } from '../protocols/http'
 
+export const badRequest = (error: Error): HttpResponse => {
+  const response: HttpResponse = {
+    statusCode: 400,
+    body: {
+      code: 400,
+      error: error.message
+    }
+  }
+  return response
+}
+
 export const badRequestValidation = (result: ValidationResult): HttpResponse => {
   const response: HttpResponse = {
     statusCode: 400,
