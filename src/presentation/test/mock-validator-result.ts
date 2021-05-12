@@ -1,10 +1,5 @@
-import { ValidatorReturn } from '../protocols/validator'
+import { ValidationResult } from 'joi'
 
-export const mockValidatorResultBadRequest = (): ValidatorReturn => ({
-  messages: [
-    {
-      field: 'email',
-      error: 'any_error'
-    }
-  ]
+export const mockValidatorResultBadRequest = (): ValidationResult => ({
+  value: null
 })
