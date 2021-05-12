@@ -12,7 +12,6 @@ export const mockCompany = (): Company => ({
       observations: 'any_string'
     }
   ],
-  freight: [],
   name: 'any_name',
   cnpj: 'any_cnpj',
   departament: 'any_departament',
