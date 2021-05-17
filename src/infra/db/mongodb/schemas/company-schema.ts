@@ -1,12 +1,13 @@
 import { CompanyModel } from '@/domain/models/company-model'
 import { model, Schema, Model, Document } from 'mongoose'
+import { AddressSchema } from './address-schema'
 
 interface ICompany extends Document, Omit<CompanyModel, '_id'> {}
 
 export const CompanySchema: Schema = new Schema({
   address: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address'
+    type: [AddressSchema],
+    default: []
   },
   freight: {
     type: Schema.Types.ObjectId,
