@@ -15,5 +15,7 @@
   "include": [
     "src"
   ],
-  "exclude": []
+  "exclude": [
+    "**/*.spec.ts"
+  ]
 }
