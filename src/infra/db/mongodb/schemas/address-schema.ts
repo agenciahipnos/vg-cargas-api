@@ -4,10 +4,6 @@ import { model, Schema, Model, Document } from 'mongoose'
 interface IAddress extends Document, Omit<AddressModel, '_id'> {}
 
 export const AddressSchema: Schema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
   cep: {
     type: String,
     required: true
