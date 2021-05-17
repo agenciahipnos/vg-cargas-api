@@ -14,11 +14,12 @@ export const badRequest = (error: Error): HttpResponse => {
   return response
 }
 
-export const badRequestValidation = (result: ValidationResult): HttpResponse => {
+export const badRequestValidation = (result: ValidationResult, message?: string): HttpResponse => {
   const response: HttpResponse = {
     statusCode: 400,
     body: {
       code: 400,
+      message,
       errors: result.error.details
     }
   }
