@@ -1,12 +1,13 @@
 import { UserModel } from '@/domain/models/user-model'
 import { model, Schema, Model, Document } from 'mongoose'
+import { AddressSchema } from './address-schema'
 
 interface IUser extends Document, Omit<UserModel, '_id'> {}
 
 export const UserSchema: Schema = new Schema({
   address: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address'
+    type: [AddressSchema],
+    default: []
   },
   driver: {
     type: Schema.Types.ObjectId,
