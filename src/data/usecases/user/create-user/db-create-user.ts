@@ -14,10 +14,7 @@ export class DbCreateUser implements CreateUser {
   async create (user: User): Promise<CreateUserReturnParams> {
     const hashed_password = await this.hasher.hash(user.password)
     const usuario_data = Object.assign({}, user, {
-      password: hashed_password,
-      address: null,
-      driver: null,
-      company: null
+      password: hashed_password
     })
     const created_user = await this.createUserRepository.create(usuario_data)
     const access_token = await this.jwtEncrypter.encrypt(created_user)
